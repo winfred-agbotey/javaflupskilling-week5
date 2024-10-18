@@ -15,6 +15,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security configuration class for setting up Spring Security.
+ * <p>
+ * This class configures authentication, authorization rules, and session management using a
+ * stateless JWT-based authentication approach.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -25,12 +31,26 @@ public class SecurityConfiguration {
     @Qualifier("delegatedAuthenticationEntryPoint")
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
+    /**
+     * Constructor to inject required dependencies.
+     *
+     * @param jwtAuthenticationFilter   The JWT filter for validating tokens in incoming requests.
+     * @param authenticationProvider    The authentication provider for verifying user credentials.
+     * @param authenticationEntryPoint  The entry point to handle unauthorized access exceptions.
+     */
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider, AuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
         this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+    /**
+     * Configures the security filter chain to manage authentication, authorization, and session policies.
+     *
+     * @param http The {@link HttpSecurity} object for configuring web-based security.
+     * @return A {@link SecurityFilterChain} object that contains the security configuration.
+     * @throws Exception If there is an error during the configuration.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

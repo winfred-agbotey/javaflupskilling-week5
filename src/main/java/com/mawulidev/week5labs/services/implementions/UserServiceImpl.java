@@ -11,7 +11,6 @@ import com.mawulidev.week5labs.models.User;
 import com.mawulidev.week5labs.repositories.UserRepository;
 import com.mawulidev.week5labs.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
