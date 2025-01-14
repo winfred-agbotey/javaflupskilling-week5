@@ -10,7 +10,7 @@ pipeline{
 		DB_USERNAME = credentials('DB_USERNAME')
 		DOCKERHUB_CREDENTIALS_PSW = credentials('DOCKERHUB_CREDENTIALS_PSW') // Jenkins credentials ID for Docker Hub
 		DOCKERHUB_CREDENTIALS_USR = credentials('DOCKERHUB_CREDENTIALS_USR') // Jenkins credentials ID for Docker Hub
-        DOCKER_IMAGE = 'winfred/javaflupskilling-week5' // Replace with your Docker Hub username and repository name
+        DOCKER_IMAGE = 'mawulidev/javaflupskilling-week5' // Replace with your Docker Hub username and repository name
         DOCKER_TAG = 'latest' // Tag for your Docker image
 	}
 	stages{
