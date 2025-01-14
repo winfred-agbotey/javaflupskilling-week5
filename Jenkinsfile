@@ -28,8 +28,8 @@ pipeline{
 
 		}
 		stages('Prepare Environment'){
-			steps {
-				configFileProvider([configFile(fileId: 'env-file', targetLocation: '.env')]) {
+			steps{
+				configFileProvider([configFile(fileId: 'env-file', targetLocation: '.env')]){
 					sh 'cat .env' // Optional: Verify that the file is placed
                 }
 
