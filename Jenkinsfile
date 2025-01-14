@@ -4,6 +4,10 @@ pipeline{
 	environment{
 		//Define environment variables here
 		MY_ENV_VAR = 'Custom Value'
+		DB_URL = credentials('DB_URL')
+		POSTGRES_DB = credentials('POSTGRES_DB')
+		DB_PASSWORD = credentials('DB_PASSWORD')
+		DB_USERNAME = credentials('DB_USERNAME')
 	}
 	stages{
 		stage('Checkout'){
