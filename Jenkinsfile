@@ -67,8 +67,7 @@ pipeline{
 				echo "Building Docker image"
 				docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
 				"""
-				sh "echo ${pwd} | docker login -u ${username} --password-stdin"
-                sh "docker push ${REGISTRY_USR}/ci:${BUILD_ID}"
+				sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
                 // Push Docker image
                  sh """
                  echo "Pushing Docker image to Docker Hub..."
