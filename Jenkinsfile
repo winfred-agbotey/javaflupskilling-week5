@@ -50,7 +50,12 @@ pipeline{
 		stage('Deploy'){
 			steps{
 				//Deploy your application to a target environment (e.g, staging, production)
-				sh 'echo "Value of ENV Variable is "$MY_ENV_VAR""'
+				sh '''
+				echo "MY_ENV_VAR: $MY_ENV_VAR"
+				echo "DB_URL: $DB_URL"
+				echo "POSTGRES_DB: $POSTGRES_DB"
+				echo "DB_USERNAME: $DB_USERNAME"
+				'''
 			}
 		}
 	}
