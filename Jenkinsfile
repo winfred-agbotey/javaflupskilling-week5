@@ -8,6 +8,10 @@ pipeline{
 		POSTGRES_DB = credentials('POSTGRES_DB')
 		DB_PASSWORD = credentials('DB_PASSWORD')
 		DB_USERNAME = credentials('DB_USERNAME')
+		DOCKERHUB_CREDENTIALS_PSW = credentials('DOCKERHUB_CREDENTIALS_PSW') // Jenkins credentials ID for Docker Hub
+		DOCKERHUB_CREDENTIALS_USR = credentials('DOCKERHUB_CREDENTIALS_USR') // Jenkins credentials ID for Docker Hub
+        DOCKER_IMAGE = 'winfred/javaflupskilling-week5' // Replace with your Docker Hub username and repository name
+        DOCKER_TAG = 'latest' // Tag for your Docker image
 	}
 	stages{
 		stage('Checkout'){
@@ -55,15 +59,26 @@ pipeline{
 				'''
 			}
 		}
-		stage('Deploy'){
+		stage('Docker Build and Push'){
 				steps{
 					//Deploy your application to a target environment (e.g, staging, production)
-				sh '''
-				echo "MY_ENV_VAR: $MY_ENV_VAR"
-				echo "DB_URL: $DB_URL"
-				echo "POSTGRES_DB: $POSTGRES_DB"
-				echo "DB_USERNAME: $DB_USERNAME"
-				'''
+					//BUild Docker image
+				sh """
+				echo "Building Docker image"
+				docker build -t $DOCKER_IMAGE:$DOCKER_TAG
+				"""
+
+				//Log in to the Docker Hub
+				sh """
+				echo "Logging in to Docker Hub..."
+				echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+				"""
+
+				// Push Docker image
+                 sh """
+                 echo "Pushing Docker image to Docker Hub..."
+                 docker push $DOCKER_IMAGE:$DOCKER_TAG
+                 """
 			}
 		}
 	}
