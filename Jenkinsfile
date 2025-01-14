@@ -27,6 +27,13 @@ pipeline{
 			}
 
 		}
+		stages('Prepare Environment'){
+			steps {
+				configFileProvider([configFile(fileId: 'env-file', targetLocation: '.env')]) {
+					sh 'cat .env' // Optional: Verify that the file is placed
+                }
+
+		}
 		stage('Build'){
 			steps{
 				//Build your application here (e.g, compile package etc)
