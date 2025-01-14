@@ -65,7 +65,7 @@ pipeline{
 					//BUild Docker image
 				sh """
 				echo "Building Docker image"
-				docker build -t $DOCKER_IMAGE:$DOCKER_TAG
+				docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
 				"""
 
 				//Log in to the Docker Hub
