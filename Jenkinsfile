@@ -35,8 +35,8 @@ pipeline{
 
 		}
 		stage('Build'){
-			steps{
-				//Build your application here (e.g, compile package etc)
+				steps{
+					//Build your application here (e.g, compile package etc)
 				//	sh 'your build command'
 				sh '''
 				ls
@@ -46,8 +46,8 @@ pipeline{
 				}
 		}
 		stage('Test'){
-			steps{
-				//Run your test (e.g, unit tests, integration tests)
+				steps{
+					//Run your test (e.g, unit tests, integration tests)
 				sh '''
 				echo "In Test Step"
 				mvn test
@@ -55,8 +55,8 @@ pipeline{
 			}
 		}
 		stage('Deploy'){
-			steps{
-				//Deploy your application to a target environment (e.g, staging, production)
+				steps{
+					//Deploy your application to a target environment (e.g, staging, production)
 				sh '''
 				echo "MY_ENV_VAR: $MY_ENV_VAR"
 				echo "DB_URL: $DB_URL"
@@ -68,13 +68,14 @@ pipeline{
 	}
 
 	post{
-		success{
-			//Action to perform when the pipeline succeeds
+			success{
+				//Action to perform when the pipeline succeeds
 			echo 'Pipeline succeeded!'
 		}
 		failure{
-			//Actions to perform when the pipeline fails
+				//Actions to perform when the pipeline fails
 			echo 'Pipeline failed!'
 		}
 	}
+}
 }
