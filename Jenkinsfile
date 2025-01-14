@@ -16,7 +16,7 @@ pipeline{
 
 					checkout([$class: 'GitSCM',
 						branches: [[name: '*/main']],
-						userRemoteConfigs: [[url: gitRepoUrl]],
+						userRemoteConfigs: [[url: 'https://github.com/winfred-agbotey/javaflupskilling-week5.git']],
 						extensions: [[$class: 'CleanBeforeCheckout'],[$class: 'CloneOption', noTags: false, shallow: true, depth: 1]],
               		])
 				}
