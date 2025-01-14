@@ -40,8 +40,8 @@ pipeline{
 
 		}
 		stage('Build'){
-				steps{
-					//Build your application here (e.g, compile package etc)
+			steps{
+				//Build your application here (e.g, compile package etc)
 				//	sh 'your build command'
 				sh '''
 				ls
@@ -51,8 +51,8 @@ pipeline{
 				}
 		}
 		stage('Test'){
-				steps{
-					//Run your test (e.g, unit tests, integration tests)
+			steps{
+				//Run your test (e.g, unit tests, integration tests)
 				sh '''
 				echo "In Test Step"
 				mvn test
@@ -60,36 +60,32 @@ pipeline{
 			}
 		}
 		stage('Docker Build and Push'){
-				steps{
-					//Deploy your application to a target environment (e.g, staging, production)
-					//BUild Docker image
+			steps{
+				withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_USR', variable: 'DOCKERHUB_CREDENTIALS_USR'), string(credentialsId: 'DOCKERHUB_CREDENTIALS_PSW', variable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
+					// some block
 				sh """
 				echo "Building Docker image"
 				docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
 				"""
-
-				//Log in to the Docker Hub
-				sh """
-				echo "Logging in to Docker Hub..."
-				echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-				"""
-
-				// Push Docker image
+				sh "echo ${pwd} | docker login -u ${username} --password-stdin"
+                sh "docker push ${REGISTRY_USR}/ci:${BUILD_ID}"
+                // Push Docker image
                  sh """
                  echo "Pushing Docker image to Docker Hub..."
                  docker push $DOCKER_IMAGE:$DOCKER_TAG
                  """
+				}
 			}
 		}
 	}
 
 	post{
-			success{
-				//Action to perform when the pipeline succeeds
+		success{
+			//Action to perform when the pipeline succeeds
 			echo 'Pipeline succeeded!'
 		}
 		failure{
-				//Actions to perform when the pipeline fails
+			//Actions to perform when the pipeline fails
 			echo 'Pipeline failed!'
 		}
 	}
