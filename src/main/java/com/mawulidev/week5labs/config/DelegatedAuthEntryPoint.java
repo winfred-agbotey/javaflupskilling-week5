@@ -52,21 +52,38 @@ public class DelegatedAuthEntryPoint implements AuthenticationEntryPoint {
         // Retrieve any authentication-related error from the request attribute "error".
         Object authError = request.getAttribute("error");
 
-        switch (authError) {
-            case ExpiredJwtException jwtException ->
-                    resolver.resolveException(request, response, null, new ExpiredJwtException(jwtException.getHeader(), jwtException.getClaims(),
-                            jwtException.getMessage()));
-            case MalformedJwtException malformedJwtException ->
-                    resolver.resolveException(request, response, null, new MalformedJwtException(malformedJwtException.getMessage()));
-            case SignatureException signatureException ->
-                    resolver.resolveException(request, response, null, new SignatureException(signatureException.getMessage()));
-            case BadCredentialsException badCredentialsException ->
-                    resolver.resolveException(request, response, null, new BadCredentialsException(badCredentialsException.getMessage()));
-            case AccessDeniedException accessDeniedException ->
-                    resolver.resolveException(request, response, null, new AccessDeniedException(accessDeniedException.getMessage()));
-            case InsufficientAuthenticationException insufficientAuthenticationException ->
-                    resolver.resolveException(request, response, null, new InsufficientAuthenticationException(insufficientAuthenticationException.getMessage()));
-            case null, default -> resolver.resolveException(request, response, null, authException);
+//        switch (authError) {
+//            case ExpiredJwtException jwtException ->
+//                    resolver.resolveException(request, response, null, new ExpiredJwtException(jwtException.getHeader(), jwtException.getClaims(),
+//                            jwtException.getMessage()));
+//            case MalformedJwtException malformedJwtException ->
+//                    resolver.resolveException(request, response, null, new MalformedJwtException(malformedJwtException.getMessage()));
+//            case SignatureException signatureException ->
+//                    resolver.resolveException(request, response, null, new SignatureException(signatureException.getMessage()));
+//            case BadCredentialsException badCredentialsException ->
+//                    resolver.resolveException(request, response, null, new BadCredentialsException(badCredentialsException.getMessage()));
+//            case AccessDeniedException accessDeniedException ->
+//                    resolver.resolveException(request, response, null, new AccessDeniedException(accessDeniedException.getMessage()));
+//            case InsufficientAuthenticationException insufficientAuthenticationException ->
+//                    resolver.resolveException(request, response, null, new InsufficientAuthenticationException(insufficientAuthenticationException.getMessage()));
+//            case null, default -> resolver.resolveException(request, response, null, authException);
+//        }
+
+        if (authError instanceof ExpiredJwtException jwtException) {
+            resolver.resolveException(request, response, null, new ExpiredJwtException(jwtException.getHeader(), jwtException.getClaims(),
+                    jwtException.getMessage()));
+        } else if (authError instanceof MalformedJwtException malformedJwtException) {
+            resolver.resolveException(request, response, null, new MalformedJwtException(malformedJwtException.getMessage()));
+        } else if (authError instanceof SignatureException signatureException) {
+            resolver.resolveException(request, response, null, new SignatureException(signatureException.getMessage()));
+        } else if (authError instanceof BadCredentialsException badCredentialsException) {
+            resolver.resolveException(request, response, null, new BadCredentialsException(badCredentialsException.getMessage()));
+        } else if (authError instanceof AccessDeniedException accessDeniedException) {
+            resolver.resolveException(request, response, null, new AccessDeniedException(accessDeniedException.getMessage()));
+        } else if (authError instanceof InsufficientAuthenticationException insufficientAuthenticationException) {
+            resolver.resolveException(request, response, null, new InsufficientAuthenticationException(insufficientAuthenticationException.getMessage()));
+        } else {
+            resolver.resolveException(request, response, null, authException);
         }
     }
 }
