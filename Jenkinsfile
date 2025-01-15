@@ -37,7 +37,7 @@ pipeline {
         stage('Build') {
 			steps {
 				sh '''
-                echo "In Build Step"
+                echo "In Build Step..."
                 mvn clean install
                 '''
             }
@@ -46,23 +46,30 @@ pipeline {
         stage('Test') {
 			steps {
 				sh '''
-                echo "In Test Step"
+                echo "In Test Step..."
                 mvn test
                 '''
             }
         }
 
         stage('Docker Build and Push') {
+			input {
+				message 'Do You Want to Deply?'
+				ok 'Yes Deploy!'
+				parameters {
+					string(name: 'TARGET_ENVIRONMENT', defaultValue: 'PROD', description: 'Target deployment environment')
+				}
+			}
 			steps {
 				withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_USR', variable: 'DOCKERHUB_CREDENTIALS_USR'), string(credentialsId: 'DOCKERHUB_CREDENTIALS_PSW', variable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
 					sh '''
-                    echo "Building Docker image"
+                    echo "Building Docker image..."
                     docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
 
-                    echo "Logging in to Docker Hub"
-                    echo DOCKERHUB_CREDENTIALS_PSW | docker login -u DOCKERHUB_CREDENTIALS_USR --password-stdin
+                    echo "Logging in to Docker Hub..."
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
 
-                    echo "Pushing Docker image to Docker Hub"
+                    echo "Pushing Docker image to Docker Hub..."
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
                 }
