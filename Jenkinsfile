@@ -54,13 +54,13 @@ pipeline {
 
         stage('Docker Build and Push') {
 			steps {
-				withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+				withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS_USR', variable: 'DOCKERHUB_CREDENTIALS_USR'), string(credentialsId: 'DOCKERHUB_CREDENTIALS_PSW', variable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
 					sh '''
                     echo "Building Docker image"
                     docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
 
                     echo "Logging in to Docker Hub"
-                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    echo DOCKERHUB_CREDENTIALS_PSW | docker login -u DOCKERHUB_CREDENTIALS_USR --password-stdin
 
                     echo "Pushing Docker image to Docker Hub"
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
